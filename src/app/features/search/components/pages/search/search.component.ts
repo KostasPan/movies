@@ -2,39 +2,29 @@ import { Component, inject } from '@angular/core';
 import { SearchBarComponent } from '../../search-bar/search-bar.component';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
-import {
-  catchError,
-  finalize,
-  map,
-  Observable,
-  of,
-  Subscription,
-  tap,
-} from 'rxjs';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { finalize, Subscription, tap } from 'rxjs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { TMDbSearchResponse } from '../../../../../core/models/tmdb-search-response.interface';
 import { TMDbMovieResult } from '../../../../../core/models/tmdb-movie-result.interface';
 import { MatIconModule } from '@angular/material/icon';
+import { SearchService } from '../../../../../core/services/movie-search.service';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-search',
+  providers: [SearchService],
   imports: [
     CommonModule,
     SearchBarComponent,
     MatCardModule,
     MatProgressSpinnerModule,
     MatIconModule,
+    MatButtonModule,
   ],
   templateUrl: './search.component.html',
   styleUrl: './search.component.css',
 })
 export class SearchComponent {
-  private http = inject(HttpClient);
-
-  private readonly API_KEY = '85204a8cc33baf447559fb6d51b18313';
-  private readonly API_URL = 'https://api.themoviedb.org/3/search/movie';
-  readonly IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w200';
+  searchService = inject(SearchService);
 
   currentSearchQuery: string = '';
   movies: TMDbMovieResult[] = [];
@@ -60,14 +50,10 @@ export class SearchComponent {
 
   fetchMovies(query: string, page: number): void {
     this.isLoading = true;
-    const params = new HttpParams()
-      .set('api_key', this.API_KEY)
-      .set('query', query)
-      .set('page', page.toString());
+    this.searchSub?.unsubscribe();
 
-    this.searchSub?.unsubscribe(); // Cancel previous request
-    this.searchSub = this.http
-      .get<TMDbSearchResponse>(this.API_URL, { params })
+    this.searchSub = this.searchService
+      .searchMovies(query, page)
       .pipe(
         tap((data) => console.log('API Response:', data)),
         finalize(() => (this.isLoading = false))
