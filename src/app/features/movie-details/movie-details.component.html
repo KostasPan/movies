@@ -25,6 +25,28 @@
             {{ lang.english_name }}<span *ngIf="!last">, </span>
           </ng-container>
         </p>
+        <div class="rating-section">
+          <h3>Rate this movie:</h3>
+          <div class="stars">
+            <mat-icon
+              *ngFor="let star of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
+              (click)="setRating(star)"
+              (mouseenter)="hovered = star"
+              (mouseleave)="hovered = 0"
+              [class.filled]="star <= (hovered || rating)"
+            >
+              star
+            </mat-icon>
+          </div>
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="submitRating()"
+            [disabled]="rating === 0"
+          >
+            Submit Rating
+          </button>
+        </div>
       </div>
     </div>
   </ng-container>
