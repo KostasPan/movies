@@ -5,8 +5,15 @@ export const routes: Routes = [
   {
     path: 'search',
     loadComponent: () =>
-      import('./features/search/components/pages/search/search.component').then(
+      import('./features/search/search.component').then(
         (m) => m.SearchComponent
+      ),
+  },
+  {
+    path: 'movie/:id',
+    loadComponent: () =>
+      import('./features/movie-details/movie-details.component').then(
+        (m) => m.MovieDetailsComponent
       ),
   },
   { path: '**', redirectTo: '/search' },

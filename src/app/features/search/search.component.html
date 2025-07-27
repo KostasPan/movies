@@ -13,11 +13,11 @@
         </button>
       </div>
       <ul class="movie-list" [class.full-height]="totalPages <= 1">
-        <li *ngFor="let movie of movies" class="movie-item">
+        <li *ngFor="let movie of movies" class="movie-item" (click)="openMovieDetails(movie.id)">
           <img [src]="
                 movie.poster_path
                   ? searchService.IMAGE_BASE_URL + movie.poster_path
-                  : 'https://placehold.co/100x150/e0e0e0/757575?text=No+Image'
+                  : 'assets/images/placeholder200x300.jpg'
               " [alt]="movie.title" width="100" height="150" />
           <div class="movie-info">
             <h2>{{ movie.title }}</h2>

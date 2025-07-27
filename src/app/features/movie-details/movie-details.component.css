@@ -1,0 +1,27 @@
+.details-container {
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+}
+
+.movie-poster {
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.movie-details {
+  flex: 1;
+}
+
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+}
+
+@media (min-width: 768px) {
+  .details-container {
+    flex-direction: row;
+  }
+}

@@ -1,0 +1,39 @@
+<mat-dialog-content>
+  <ng-container *ngIf="movie$ | async as movie; else loading">
+    <div class="details-container">
+      <img
+        [src]="
+          movie.poster_path
+            ? 'https://image.tmdb.org/t/p/w500' + movie.poster_path
+            : 'assets/images/placeholder200x300.jpg'
+        " [alt]="movie.title" width="200" height="300"
+        class="movie-poster"
+      />
+      <div class="movie-details">
+        <h2>{{ movie.title }}</h2>
+        <p><strong>Overview:</strong> {{ movie.overview }}</p>
+        <p><strong>Release Date:</strong> {{ movie.release_date | date }}</p>
+        <p>
+          <strong>Rating:</strong> {{ movie.vote_average.toFixed(1) }} / 10
+          ({{ movie.vote_count }} votes)
+        </p>
+        <p><strong>Budget:</strong> {{ movie.budget | currency }}</p>
+        <p><strong>Revenue:</strong> {{ movie.revenue | currency }}</p>
+        <p>
+          <strong>Spoken Languages:</strong>
+          <ng-container *ngFor="let lang of movie.spoken_languages; let last = last">
+            {{ lang.english_name }}<span *ngIf="!last">, </span>
+          </ng-container>
+        </p>
+      </div>
+    </div>
+  </ng-container>
+  <ng-template #loading>
+    <div class="spinner-container">
+      <mat-spinner diameter="50"></mat-spinner>
+    </div>
+  </ng-template>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Close</button>
+</mat-dialog-actions>

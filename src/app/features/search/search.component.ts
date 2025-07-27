@@ -1,13 +1,15 @@
 import { Component, inject } from '@angular/core';
-import { SearchBarComponent } from '../../search-bar/search-bar.component';
+import { SearchBarComponent } from './components/search-bar/search-bar.component';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { finalize, Subscription, tap } from 'rxjs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { TMDbMovieResult } from '../../../../../core/models/tmdb-movie-result.interface';
+import { TMDbMovieResult } from '../../core/models/tmdb-movie-result.interface';
 import { MatIconModule } from '@angular/material/icon';
-import { SearchService } from '../../../../../core/services/movie-search.service';
+import { SearchService } from '../../core/services/movie-search.service';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDialog } from '@angular/material/dialog';
+import { MovieDetailsComponent } from '../movie-details/movie-details.component';
 
 @Component({
   selector: 'app-search',
@@ -25,6 +27,7 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class SearchComponent {
   searchService = inject(SearchService);
+  dialog = inject(MatDialog);
 
   currentSearchQuery: string = '';
   movies: TMDbMovieResult[] = [];
@@ -75,6 +78,12 @@ export class SearchComponent {
     if (page > 0 && page <= this.totalPages) {
       this.fetchMovies(this.currentSearchQuery, page);
     }
+  }
+
+  openMovieDetails(movieId: number): void {
+    this.dialog.open(MovieDetailsComponent, {
+      data: { movieId },
+    });
   }
 
   private clearResults(): void {
