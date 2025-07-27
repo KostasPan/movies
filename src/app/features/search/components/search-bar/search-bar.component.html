@@ -1,0 +1,66 @@
+<!-- <form #searchForm="ngForm">
+  <mat-form-field class="search-form-field" appearance="outline">
+    <mat-icon matPrefix>search</mat-icon>
+    <input
+      matInput
+      type="text"
+      placeholder="Search your movie"
+      [(ngModel)]="searchTerm"
+      (ngModelChange)="onSearchChange(searchForm)"
+      name="movieSearch"
+      required
+      appLetterNumberMinLength
+      #searchInput="ngModel"
+    />
+    <button
+      *ngIf="searchTerm"
+      mat-icon-button
+      matSuffix
+      (click)="clearSearch(searchForm)"
+      aria-label="Clear"
+    >
+      <mat-icon>close</mat-icon>
+    </button>
+
+    <mat-error *ngIf="searchInput.errors?.['required']">
+      A search term is required.
+    </mat-error>
+    <mat-error *ngIf="searchInput.errors?.['minlength']">
+      Please enter at least 3 characters.
+    </mat-error>
+    <mat-error *ngIf="searchInput.errors?.['alphanumeric']">
+      Only alphanumeric characters are allowed.
+    </mat-error>
+  </mat-form-field>
+</form> -->
+
+<mat-form-field class="search-form-field" appearance="outline">
+  <mat-icon matPrefix>search</mat-icon>
+  <input
+    matInput
+    type="text"
+    placeholder="Search a movie"
+    [ngModel]="searchTerm"
+    (ngModelChange)="onSearchInputChange($event)"
+    name="movieSearch"
+    required
+    appLetterNumberMinLength
+    #searchInput="ngModel"
+  />
+  <button
+    *ngIf="searchTerm"
+    mat-icon-button
+    matSuffix
+    (click)="clearSearch()"
+    aria-label="Clear"
+  >
+    <mat-icon>close</mat-icon>
+  </button>
+
+  <mat-error *ngIf="searchInput.errors?.['minlength']">
+    Please enter at least 3 characters.
+  </mat-error>
+  <mat-error *ngIf="searchInput.errors?.['alphanumeric']">
+    Only alphanumeric characters are allowed.
+  </mat-error>
+</mat-form-field>

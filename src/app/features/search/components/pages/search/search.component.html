@@ -1,0 +1,57 @@
+<div id="search-page">
+  <app-search-bar (search)="onSearchReceived($event)"></app-search-bar>
+  <div class="results-container">
+    <mat-spinner *ngIf="isLoading" diameter="50"></mat-spinner>
+
+    <ng-container *ngIf="!isLoading">
+      <div class="search-results" *ngIf="movies.length > 0">
+        <ul class="movie-list">
+          <li *ngFor="let movie of movies" class="movie-item">
+            <img
+              [src]="
+                movie.poster_path
+                  ? IMAGE_BASE_URL + movie.poster_path
+                  : 'https://placehold.co/100x150/e0e0e0/757575?text=No+Image'
+              "
+              [alt]="movie.title"
+              width="100"
+              height="150"
+            />
+            <div class="movie-info">
+              <h2>{{ movie.title }}</h2>
+              <div class="vote-average">
+                <span>{{ movie.vote_average.toFixed(1) }} / 10</span>
+              </div>
+            </div>
+          </li>
+        </ul>
+        <div class="pagination-controls" *ngIf="totalPages > 1">
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="changePage(currentPage - 1)"
+            [disabled]="currentPage === 1"
+          >
+            Previous
+          </button>
+          <span>Page {{ currentPage }} of {{ totalPages }}</span>
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="changePage(currentPage + 1)"
+            [disabled]="currentPage === totalPages"
+          >
+            Next
+          </button>
+        </div>
+      </div>
+      <p
+        *ngIf="searchAttempted && movies.length === 0 && currentSearchQuery"
+        class="no-results"
+      >
+        No movies found for "<strong>{{ currentSearchQuery }}</strong
+        >".
+      </p>
+    </ng-container>
+  </div>
+</div>
