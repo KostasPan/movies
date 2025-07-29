@@ -57,9 +57,6 @@ export class CollectionDetailsComponent implements OnInit {
         this.collection.movies = this.collection.movies.filter(
           (movie) => movie.id !== movieId
         );
-        this.snackBar.open('Movie removed from collection', 'Close', {
-          duration: 2000,
-        });
         if (this.collection.movies.length === 0) {
           this.router.navigate(['/collections']);
         }

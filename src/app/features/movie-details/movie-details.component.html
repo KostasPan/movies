@@ -30,7 +30,7 @@
             </ng-container>
           </p>
           <div class="rating-section">
-            <p><strong>Rate this movie:</strong></p>
+            <p><strong>Rate this movie:</strong><span *ngIf="submittedRating"> {{ submittedRating }} / 10</span></p>
             <div class="stars">
               <mat-icon
                 *ngFor="let star of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
@@ -42,14 +42,17 @@
                 star
               </mat-icon>
             </div>
-            <button
-              mat-raised-button
-              color="primary"
-              (click)="submitRating()"
-              [disabled]="rating === 0"
-            >
-              Submit Rating
-            </button>
+            <div class="submit-container">
+                <button
+                mat-raised-button
+                color="primary"
+                (click)="submitRating()"
+                [disabled]="rating === 0 || isSubmittingRating"
+              >
+                Submit Rating
+              </button>
+              <mat-spinner *ngIf="isSubmittingRating" [diameter]="24"></mat-spinner>
+            </div>
           </div>
           <div class="collection-section">
               <p><strong>Add to collection:</strong></p>
@@ -57,7 +60,7 @@
                 <mat-label>Select a collection</mat-label>
                 <mat-select [(value)]="selectedCollection">
                   <mat-option *ngFor="let collection of collections" [value]="collection.title">
-                    {{ collection.title }}
+                    {{ collection.title }} ({{ collection.movies.length }})
                   </mat-option>
                 </mat-select>
               </mat-form-field>

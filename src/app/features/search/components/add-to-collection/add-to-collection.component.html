@@ -1,0 +1,16 @@
+<h2 mat-dialog-title>Add to Collection</h2>
+<mat-dialog-content>
+  <p>Select a collection to add {{ data.movies.length }} movie(s) to.</p>
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Collection</mat-label>
+    <mat-select [(value)]="selectedCollection">
+      <mat-option *ngFor="let collection of collections" [value]="collection.title">
+        {{ collection.title }} ({{ collection.movies.length }})
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-raised-button color="primary" [disabled]="!selectedCollection" (click)="addMovies()">Add</button>
+</mat-dialog-actions>

@@ -76,6 +76,12 @@
   align-items: flex-start;
 }
 
+.submit-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 @media (min-width: 768px) {
   .details-container {
     flex-direction: row;

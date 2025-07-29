@@ -11,6 +11,9 @@
     <h3>Movies in this collection ({{ collection.movies.length }})</h3>
     <ul class="movie-list">
       <li *ngFor="let movie of collection.movies" class="movie-item" (click)="openMovieDetails(movie.id)">
+        <button mat-icon-button color="warn" (click)="removeMovie(movie.id, $event)">
+          <mat-icon>delete</mat-icon>
+        </button>
         <img [src]="
                   movie.poster_path
                     ? searchService.IMAGE_BASE_URL + movie.poster_path
@@ -22,9 +25,6 @@
             <span>{{ movie.vote_average.toFixed(1) }} / 10</span>
           </div>
         </div>
-        <button mat-icon-button color="warn" (click)="removeMovie(movie.id, $event)">
-          <mat-icon>delete</mat-icon>
-        </button>
       </li>
     </ul>
   </div>

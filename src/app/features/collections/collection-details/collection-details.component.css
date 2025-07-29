@@ -3,11 +3,7 @@
 }
 
 .movie-list {
-  list-style-type: none;
   padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
 }
 
 .movie-item {
@@ -20,11 +16,22 @@
   align-items: center;
   margin-bottom: 1rem;
   cursor: pointer;
-  width: calc(50% - 40px);
 }
 
 .movie-item img {
   object-fit: cover;
   border-radius: 10px;
   flex-shrink: 0;
+}
+
+@media (min-width: 768px) {
+  .movie-item {
+    width: calc(50% - 40px);
+    margin-bottom: 0.1rem;
+  }
+  .movie-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
 }

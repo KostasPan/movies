@@ -6,7 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { Observable } from 'rxjs';
+import { Observable, finalize } from 'rxjs';
 import { TMDbMovieResult } from '../../core/models/tmdb-movie-result.interface';
 import { SearchService } from '../../core/services/movie-search.service';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
@@ -39,6 +39,9 @@ export class MovieDetailsComponent implements OnInit {
   movie: TMDbMovieResult | null = null;
   movieId: number = 0;
 
+  isSubmittingRating = false;
+  submittedRating: number | null = null;
+
   constructor(
     private searchService: SearchService,
     private snackBar: MatSnackBar,
@@ -63,12 +66,19 @@ export class MovieDetailsComponent implements OnInit {
   }
 
   submitRating(): void {
+    if (this.isSubmittingRating) {
+      return;
+    }
+    this.isSubmittingRating = true;
+
     this.searchService.createGuestSession().subscribe({
       next: (session) => {
         this.searchService
           .rateMovie(this.movieId, this.rating, session.guest_session_id)
+          .pipe(finalize(() => (this.isSubmittingRating = false)))
           .subscribe({
             next: () => {
+              this.submittedRating = this.rating;
               this.snackBar.open('Rating submitted successfully!', 'Close', {
                 duration: 3000,
               });
@@ -81,6 +91,7 @@ export class MovieDetailsComponent implements OnInit {
           });
       },
       error: () => {
+        this.isSubmittingRating = false;
         this.snackBar.open('Failed to create a guest session.', 'Close', {
           duration: 3000,
         });

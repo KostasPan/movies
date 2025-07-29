@@ -10,8 +10,20 @@
   gap: 1rem;
   align-items: center;
   margin-bottom: 1rem;
-  cursor: pointer;
 }
+
+.movie-item.selected {
+  background-color: #e8f0fe;
+}
+
+.movie-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  cursor: pointer;
+  flex-grow: 1;
+}
+
 .movie-item img {
   object-fit: cover;
   border-radius: 10px;
@@ -22,6 +34,7 @@
   justify-content: space-between;
   align-items: center;
   margin-top: 1.5rem;
+  margin-bottom: 1rem;
   width: 100%;
 }
 .full-height {
@@ -32,6 +45,16 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+.floating-action-button {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  background-color: #005cbb !important;
+  color: white !important;
 }
 
 @media (min-width: 768px) {
