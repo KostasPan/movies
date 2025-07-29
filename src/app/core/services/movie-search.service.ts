@@ -7,7 +7,7 @@ import { TMDbMovieResult } from '../models/tmdb-movie-result.interface';
 import { GuestSession } from '../models/guest-session.interface';
 
 @Injectable({
-  providedIn: 'root', // Service is available application-wide
+  providedIn: 'root',
 })
 export class SearchService {
   private http = inject(HttpClient);

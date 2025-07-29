@@ -1,6 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatIconModule } from '@angular/material/icon';
@@ -13,6 +12,7 @@ import { SearchService } from '../../core/services/movie-search.service';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MovieCollection } from '../../core/models/movie-collection.interface';
 import { CollectionService } from '../../core/services/collection.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-movie-details',
@@ -37,17 +37,19 @@ export class MovieDetailsComponent implements OnInit {
   collections: MovieCollection[] = [];
   selectedCollection: string = '';
   movie: TMDbMovieResult | null = null;
+  movieId: number = 0;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA)
-    public data: { movieId: number },
     private searchService: SearchService,
     private snackBar: MatSnackBar,
-    private collectionService: CollectionService
+    private collectionService: CollectionService,
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
-    this.movie$ = this.searchService.getMovieDetails(this.data.movieId);
+    this.movieId = +this.route.snapshot.params['id'];
+    this.movie$ = this.searchService.getMovieDetails(this.movieId);
     this.movie$.subscribe((movie) => (this.movie = movie));
     this.collections = this.collectionService.getCollections();
   }
@@ -56,11 +58,15 @@ export class MovieDetailsComponent implements OnInit {
     this.rating = rating;
   }
 
+  closeModal(): void {
+    this.router.navigate(['/search']);
+  }
+
   submitRating(): void {
     this.searchService.createGuestSession().subscribe({
       next: (session) => {
         this.searchService
-          .rateMovie(this.data.movieId, this.rating, session.guest_session_id)
+          .rateMovie(this.movieId, this.rating, session.guest_session_id)
           .subscribe({
             next: () => {
               this.snackBar.open('Rating submitted successfully!', 'Close', {

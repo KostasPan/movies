@@ -8,8 +8,7 @@ import { TMDbMovieResult } from '../../core/models/tmdb-movie-result.interface';
 import { MatIconModule } from '@angular/material/icon';
 import { SearchService } from '../../core/services/movie-search.service';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialog } from '@angular/material/dialog';
-import { MovieDetailsComponent } from '../movie-details/movie-details.component';
+import { Router, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-search',
@@ -21,13 +20,14 @@ import { MovieDetailsComponent } from '../movie-details/movie-details.component'
     MatProgressSpinnerModule,
     MatIconModule,
     MatButtonModule,
+    RouterOutlet,
   ],
   templateUrl: './search.component.html',
   styleUrl: './search.component.css',
 })
 export class SearchComponent {
   searchService = inject(SearchService);
-  dialog = inject(MatDialog);
+  router = inject(Router);
 
   currentSearchQuery: string = '';
   movies: TMDbMovieResult[] = [];
@@ -81,9 +81,7 @@ export class SearchComponent {
   }
 
   openMovieDetails(movieId: number): void {
-    this.dialog.open(MovieDetailsComponent, {
-      data: { movieId },
-    });
+    this.router.navigate(['/search/movie', movieId]);
   }
 
   private clearResults(): void {

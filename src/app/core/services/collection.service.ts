@@ -13,10 +13,15 @@ export class CollectionService {
     return collectionsJson ? JSON.parse(collectionsJson) : [];
   }
 
+  getCollectionByTitle(title: string): MovieCollection | undefined {
+    const collections = this.getCollections();
+    return collections.find((c) => c.title === title);
+  }
+
   addCollection(title: string, description: string): boolean {
     const collections = this.getCollections();
     if (collections.find((c) => c.title === title)) {
-      return false; // Collection already exists
+      return false;
     }
     collections.push({ title, description, movies: [] });
     this.saveCollections(collections);
@@ -32,6 +37,20 @@ export class CollectionService {
     if (collection) {
       if (!collection.movies.find((m) => m.id === movie.id)) {
         collection.movies.push(movie);
+        this.saveCollections(collections);
+        return true;
+      }
+    }
+    return false;
+  }
+
+  removeMovieFromCollection(collectionTitle: string, movieId: number): boolean {
+    const collections = this.getCollections();
+    const collection = collections.find((c) => c.title === collectionTitle);
+    if (collection) {
+      const movieIndex = collection.movies.findIndex((m) => m.id === movieId);
+      if (movieIndex > -1) {
+        collection.movies.splice(movieIndex, 1);
         this.saveCollections(collections);
         return true;
       }

@@ -1,19 +1,16 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { MatListModule } from '@angular/material/list';
-import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { CollectionService } from '../../core/services/collection.service';
-import { MovieCollection } from '../../core/models/movie-collection.interface';
-import { SearchService } from '../../core/services/movie-search.service';
+import { CollectionService } from '../../../core/services/collection.service';
 
 @Component({
-  selector: 'app-collections',
+  selector: 'app-create-collection',
   standalone: true,
   imports: [
     CommonModule,
@@ -22,29 +19,18 @@ import { SearchService } from '../../core/services/movie-search.service';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatListModule,
-    MatIconModule,
     MatSnackBarModule,
   ],
-  templateUrl: './collections.component.html',
-  styleUrls: ['./collections.component.css'],
+  templateUrl: './create-collection.component.html',
+  styleUrl: './create-collection.component.css',
 })
-export class CollectionsComponent implements OnInit {
+export class CreateCollectionComponent {
   collectionService = inject(CollectionService);
-  searchService = inject(SearchService);
   snackBar = inject(MatSnackBar);
+  router = inject(Router);
 
-  collections: MovieCollection[] = [];
   newCollectionTitle: string = '';
   newCollectionDescription: string = '';
-
-  ngOnInit(): void {
-    this.loadCollections();
-  }
-
-  loadCollections(): void {
-    this.collections = this.collectionService.getCollections();
-  }
 
   createCollection(): void {
     if (
@@ -58,9 +44,7 @@ export class CollectionsComponent implements OnInit {
         )
       ) {
         this.snackBar.open('Collection created!', 'Close', { duration: 2000 });
-        this.newCollectionTitle = '';
-        this.newCollectionDescription = '';
-        this.loadCollections();
+        this.router.navigate(['/collections']);
       } else {
         this.snackBar.open('Collection title already exists.', 'Close', {
           duration: 2000,

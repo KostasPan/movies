@@ -1,0 +1,14 @@
+<div class="create-collection-container">
+  <h2>Create a new collection</h2>
+  <form (ngSubmit)="createCollection()" class="add-collection-form">
+    <mat-form-field appearance="fill">
+      <mat-label>Title</mat-label>
+      <input matInput [(ngModel)]="newCollectionTitle" name="collectionTitle" required>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Description</mat-label>
+      <textarea matInput [(ngModel)]="newCollectionDescription" name="collectionDescription" required></textarea>
+    </mat-form-field>
+    <button mat-raised-button color="primary" type="submit" [disabled]="!newCollectionTitle.trim() || !newCollectionDescription.trim()">Create Collection</button>
+  </form>
+</div>

@@ -1,73 +1,75 @@
-<mat-dialog-content>
-  <ng-container *ngIf="movie$ | async as movie; else loading">
-    <div class="details-container">
-      <img
-        [src]="
-          movie.poster_path
-            ? 'https://image.tmdb.org/t/p/w500' + movie.poster_path
-            : 'assets/images/placeholder200x300.jpg'
-        " [alt]="movie.title" width="200" height="300"
-        class="movie-poster"
-      />
-      <div class="movie-details">
-        <h2>{{ movie.title }}</h2>
-        <p><strong>Overview:</strong> {{ movie.overview }}</p>
-        <p><strong>Release Date:</strong> {{ movie.release_date | date }}</p>
-        <p>
-          <strong>Rating:</strong> {{ movie.vote_average.toFixed(1) }} / 10
-          ({{ movie.vote_count }} votes)
-        </p>
-        <p><strong>Budget:</strong> {{ movie.budget | currency }}</p>
-        <p><strong>Revenue:</strong> {{ movie.revenue | currency }}</p>
-        <p>
-          <strong>Spoken Languages:</strong>
-          <ng-container *ngFor="let lang of movie.spoken_languages; let last = last">
-            {{ lang.english_name }}<span *ngIf="!last">, </span>
-          </ng-container>
-        </p>
-        <div class="rating-section">
-          <p><strong>Rate this movie:</strong></p>
-          <div class="stars">
-            <mat-icon
-              *ngFor="let star of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
-              (click)="setRating(star)"
-              (mouseenter)="hovered = star"
-              (mouseleave)="hovered = 0"
-              [class.filled]="star <= (hovered || rating)"
+<div class="modal-overlay" (click)="closeModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <button mat-icon-button class="close-button" (click)="closeModal()">
+      <mat-icon>close</mat-icon>
+    </button>
+    <ng-container *ngIf="movie$ | async as movie; else loading">
+      <div class="details-container">
+        <img
+          [src]="
+            movie.poster_path
+              ? 'https://image.tmdb.org/t/p/w500' + movie.poster_path
+              : 'assets/images/placeholder200x300.jpg'
+          " [alt]="movie.title" width="200" height="300"
+          class="movie-poster"
+        />
+        <div class="movie-details">
+          <h2>{{ movie.title }}</h2>
+          <p><strong>Overview:</strong> {{ movie.overview }}</p>
+          <p><strong>Release Date:</strong> {{ movie.release_date | date }}</p>
+          <p>
+            <strong>Rating:</strong> {{ movie.vote_average.toFixed(1) }} / 10
+            ({{ movie.vote_count }} votes)
+          </p>
+          <p><strong>Budget:</strong> {{ movie.budget | currency }}</p>
+          <p><strong>Revenue:</strong> {{ movie.revenue | currency }}</p>
+          <p>
+            <strong>Spoken Languages:</strong>
+            <ng-container *ngFor="let lang of movie.spoken_languages; let last = last">
+              {{ lang.english_name }}<span *ngIf="!last">, </span>
+            </ng-container>
+          </p>
+          <div class="rating-section">
+            <p><strong>Rate this movie:</strong></p>
+            <div class="stars">
+              <mat-icon
+                *ngFor="let star of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
+                (click)="setRating(star)"
+                (mouseenter)="hovered = star"
+                (mouseleave)="hovered = 0"
+                [class.filled]="star <= (hovered || rating)"
+              >
+                star
+              </mat-icon>
+            </div>
+            <button
+              mat-raised-button
+              color="primary"
+              (click)="submitRating()"
+              [disabled]="rating === 0"
             >
-              star
-            </mat-icon>
+              Submit Rating
+            </button>
           </div>
-          <button
-            mat-raised-button
-            color="primary"
-            (click)="submitRating()"
-            [disabled]="rating === 0"
-          >
-            Submit Rating
-          </button>
-        </div>
-        <div class="collection-section">
-            <p><strong>Add to collection:</strong></p>
-            <mat-form-field appearance="fill">
-              <mat-label>Select a collection</mat-label>
-              <mat-select [(value)]="selectedCollection">
-                <mat-option *ngFor="let collection of collections" [value]="collection.title">
-                  {{ collection.title }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-            <button mat-raised-button color="primary" (click)="addToCollection()" [disabled]="!selectedCollection">Add</button>
+          <div class="collection-section">
+              <p><strong>Add to collection:</strong></p>
+              <mat-form-field appearance="fill">
+                <mat-label>Select a collection</mat-label>
+                <mat-select [(value)]="selectedCollection">
+                  <mat-option *ngFor="let collection of collections" [value]="collection.title">
+                    {{ collection.title }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <button mat-raised-button color="primary" (click)="addToCollection()" [disabled]="!selectedCollection">Add</button>
+          </div>
         </div>
       </div>
-    </div>
-  </ng-container>
-  <ng-template #loading>
-    <div class="spinner-container">
-      <mat-spinner diameter="50"></mat-spinner>
-    </div>
-  </ng-template>
-</mat-dialog-content>
-<mat-dialog-actions align="end">
-  <button mat-button mat-dialog-close>Close</button>
-</mat-dialog-actions>
+    </ng-container>
+    <ng-template #loading>
+      <div class="spinner-container">
+        <mat-spinner diameter="50"></mat-spinner>
+      </div>
+    </ng-template>
+  </div>
+</div>
