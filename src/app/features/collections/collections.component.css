@@ -1,0 +1,20 @@
+.collections-container,
+.add-collection-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.collections-container {
+  align-items: center;
+}
+
+.collections-list {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+@media (min-width: 768px) {
+  .add-collection {
+    width: 50vw;
+  }
+}

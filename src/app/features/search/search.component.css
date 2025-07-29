@@ -1,9 +1,5 @@
 .movie-list {
-  list-style-type: none;
   padding: 0;
-  width: 100%;
-  height: calc(100vh - 195px);
-  overflow-y: scroll;
 }
 .movie-item {
   display: flex;

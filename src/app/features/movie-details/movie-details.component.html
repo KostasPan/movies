@@ -26,7 +26,7 @@
           </ng-container>
         </p>
         <div class="rating-section">
-          <h3>Rate this movie:</h3>
+          <p><strong>Rate this movie:</strong></p>
           <div class="stars">
             <mat-icon
               *ngFor="let star of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
@@ -46,6 +46,18 @@
           >
             Submit Rating
           </button>
+        </div>
+        <div class="collection-section">
+            <p><strong>Add to collection:</strong></p>
+            <mat-form-field appearance="fill">
+              <mat-label>Select a collection</mat-label>
+              <mat-select [(value)]="selectedCollection">
+                <mat-option *ngFor="let collection of collections" [value]="collection.title">
+                  {{ collection.title }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <button mat-raised-button color="primary" (click)="addToCollection()" [disabled]="!selectedCollection">Add</button>
         </div>
       </div>
     </div>

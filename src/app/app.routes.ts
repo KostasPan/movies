@@ -16,5 +16,12 @@ export const routes: Routes = [
         (m) => m.MovieDetailsComponent
       ),
   },
+  {
+    path: 'collections',
+    loadComponent: () =>
+      import('./features/collections/collections.component').then(
+        (m) => m.CollectionsComponent
+      ),
+  },
   { path: '**', redirectTo: '/search' },
 ];

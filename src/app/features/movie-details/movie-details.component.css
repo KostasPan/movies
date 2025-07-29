@@ -13,15 +13,15 @@
   flex: 1;
 }
 
+.movie-details h2 {
+  margin-top: 0;
+}
+
 .spinner-container {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 300px;
-}
-
-.rating-section {
-  margin-top: 20px;
 }
 
 .stars {
@@ -38,6 +38,12 @@
 
 .stars mat-icon.filled {
   color: #ffc107;
+}
+
+.collection-section,
+.rating-section {
+  display: flex;
+  flex-direction: column;
 }
 
 @media (min-width: 768px) {
