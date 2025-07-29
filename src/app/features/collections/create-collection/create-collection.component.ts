@@ -1,6 +1,11 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import {
+  FormsModule,
+  ReactiveFormsModule,
+  FormBuilder,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -15,6 +20,7 @@ import { CollectionService } from '../../../core/services/collection.service';
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule, // Add ReactiveFormsModule
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
@@ -28,19 +34,20 @@ export class CreateCollectionComponent {
   collectionService = inject(CollectionService);
   snackBar = inject(MatSnackBar);
   router = inject(Router);
+  fb = inject(FormBuilder);
 
-  newCollectionTitle: string = '';
-  newCollectionDescription: string = '';
+  collectionForm = this.fb.group({
+    title: ['', Validators.required],
+    description: ['', Validators.required],
+  });
 
   createCollection(): void {
-    if (
-      this.newCollectionTitle.trim() &&
-      this.newCollectionDescription.trim()
-    ) {
+    if (this.collectionForm.valid) {
+      const { title, description } = this.collectionForm.value;
       if (
         this.collectionService.addCollection(
-          this.newCollectionTitle,
-          this.newCollectionDescription
+          title as string,
+          description as string
         )
       ) {
         this.snackBar.open('Collection created!', 'Close', { duration: 2000 });

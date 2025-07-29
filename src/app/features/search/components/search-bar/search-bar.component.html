@@ -46,6 +46,7 @@
     required
     appLetterNumberMinLength
     #searchInput="ngModel"
+    (input)="searchInput.control.markAsTouched()"
   />
   <button
     *ngIf="searchTerm"
