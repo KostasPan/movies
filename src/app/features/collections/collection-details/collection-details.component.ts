@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { CommonModule, Location } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { MatListModule } from '@angular/material/list';
 import { MatCardModule } from '@angular/material/card';
@@ -28,7 +28,6 @@ export class CollectionDetailsComponent implements OnInit {
   private router = inject(Router);
   private collectionService = inject(CollectionService);
   public TMDBService = inject(TMDBService);
-  private location = inject(Location);
 
   collection: MovieCollection | undefined;
 
@@ -40,7 +39,7 @@ export class CollectionDetailsComponent implements OnInit {
   }
 
   openMovieDetails(movieId: number): void {
-    this.router.navigate(['/search/movie', movieId]);
+    this.router.navigate(['/', { outlets: { modal: ['movie', movieId] } }]);
   }
 
   removeMovie(movieId: number, event: MouseEvent): void {
@@ -63,6 +62,6 @@ export class CollectionDetailsComponent implements OnInit {
   }
 
   goBack(): void {
-    this.location.back();
+    this.router.navigate(['/collections']);
   }
 }

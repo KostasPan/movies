@@ -87,7 +87,7 @@ export class SearchComponent {
   }
 
   openMovieDetails(movieId: number): void {
-    this.router.navigate(['/search/movie', movieId]);
+    this.router.navigate(['/', { outlets: { modal: ['movie', movieId] } }]);
   }
 
   isSelected(movie: TMDbMovieResult): boolean {

@@ -15,8 +15,7 @@ export class TMDBService {
   private readonly API_KEY = environment.apiKey;
   private readonly MOVIE_API_URL = 'https://api.themoviedb.org/3/movie';
   private readonly SEARCH_API_URL = 'https://api.themoviedb.org/3/search/movie';
-  private readonly GUEST_SESSION_URL =
-    'https://api.themoviedb.org/3/authentication/guest_session/new';
+  private readonly GUEST_SESSION_URL = 'https://api.themoviedb.org/3/authentication/guest_session/new';
   readonly IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w200';
 
   searchMovies(query: string, page: number): Observable<TMDbSearchResponse> {

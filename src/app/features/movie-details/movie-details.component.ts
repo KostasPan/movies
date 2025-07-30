@@ -59,7 +59,7 @@ export class MovieDetailsComponent implements OnInit {
   }
 
   closeModal(): void {
-    this.router.navigate(['/search']);
+    this.router.navigate(['/', { outlets: { modal: null } }]);
   }
 
   submitRating(): void {
