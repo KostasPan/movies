@@ -82,6 +82,11 @@
   gap: 10px;
 }
 
+.add-to-collection-button {
+  background-color: #005cbb !important;
+  color: white !important;
+}
+
 @media (min-width: 768px) {
   .details-container {
     flex-direction: row;

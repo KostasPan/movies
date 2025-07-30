@@ -10,7 +10,10 @@
             movie.poster_path
               ? 'https://image.tmdb.org/t/p/w500' + movie.poster_path
               : 'assets/images/placeholder200x300.jpg'
-          " [alt]="movie.title" width="200" height="300"
+          "
+          [alt]="movie.title"
+          width="200"
+          height="300"
           class="movie-poster"
         />
         <div class="movie-details">
@@ -25,12 +28,17 @@
           <p><strong>Revenue:</strong> {{ movie.revenue | currency }}</p>
           <p>
             <strong>Spoken Languages:</strong>
-            <ng-container *ngFor="let lang of movie.spoken_languages; let last = last">
+            <ng-container
+              *ngFor="let lang of movie.spoken_languages; let last = last"
+            >
               {{ lang.english_name }}<span *ngIf="!last">, </span>
             </ng-container>
           </p>
           <div class="rating-section">
-            <p><strong>Rate this movie:</strong><span *ngIf="submittedRating"> {{ submittedRating }} / 10</span></p>
+            <p>
+              <strong>Rate this movie:</strong
+              ><span *ngIf="submittedRating"> {{ submittedRating }} / 10</span>
+            </p>
             <div class="stars">
               <mat-icon
                 *ngFor="let star of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
@@ -43,7 +51,7 @@
               </mat-icon>
             </div>
             <div class="submit-container">
-                <button
+              <button
                 mat-raised-button
                 color="primary"
                 (click)="submitRating()"
@@ -51,20 +59,21 @@
               >
                 Submit Rating
               </button>
-              <mat-spinner *ngIf="isSubmittingRating" [diameter]="24"></mat-spinner>
+              <mat-spinner
+                *ngIf="isSubmittingRating"
+                [diameter]="24"
+              ></mat-spinner>
             </div>
           </div>
           <div class="collection-section">
-              <p><strong>Add to collection:</strong></p>
-              <mat-form-field appearance="fill">
-                <mat-label>Select a collection</mat-label>
-                <mat-select [(value)]="selectedCollection">
-                  <mat-option *ngFor="let collection of collections" [value]="collection.title">
-                    {{ collection.title }} ({{ collection.movies.length }})
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-              <button mat-raised-button color="primary" (click)="addToCollection()" [disabled]="!selectedCollection">Add</button>
+            <p><strong>Add to collection:</strong></p>
+            <button
+              mat-raised-button
+              class="add-to-collection-button"
+              (click)="openAddToCollectionDialog(movie)"
+            >
+              Add to a Collection
+            </button>
           </div>
         </div>
       </div>
