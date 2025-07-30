@@ -6,7 +6,7 @@ import { finalize, Subscription, tap } from 'rxjs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { TMDbMovieResult } from '../../core/models/tmdb-movie-result.interface';
 import { MatIconModule } from '@angular/material/icon';
-import { SearchService } from '../../core/services/movie-search.service';
+import { TMDBService } from '../../core/services/tmdb.service';
 import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterOutlet } from '@angular/router';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -15,7 +15,7 @@ import { AddToCollectionComponent } from './components/add-to-collection/add-to-
 
 @Component({
   selector: 'app-search',
-  providers: [SearchService],
+  providers: [TMDBService],
   imports: [
     CommonModule,
     SearchBarComponent,
@@ -30,7 +30,7 @@ import { AddToCollectionComponent } from './components/add-to-collection/add-to-
   styleUrl: './search.component.css',
 })
 export class SearchComponent {
-  searchService = inject(SearchService);
+  TMDBService = inject(TMDBService);
   router = inject(Router);
   dialog = inject(MatDialog);
 
@@ -62,8 +62,7 @@ export class SearchComponent {
     this.isLoading = true;
     this.searchSub?.unsubscribe();
 
-    this.searchSub = this.searchService
-      .searchMovies(query, page)
+    this.searchSub = this.TMDBService.searchMovies(query, page)
       .pipe(
         tap((data) => console.log('API Response:', data)),
         finalize(() => (this.isLoading = false))

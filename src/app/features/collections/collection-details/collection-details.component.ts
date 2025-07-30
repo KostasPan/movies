@@ -5,10 +5,9 @@ import { MatListModule } from '@angular/material/list';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { CollectionService } from '../../../core/services/collection.service';
 import { MovieCollection } from '../../../core/models/movie-collection.interface';
-import { SearchService } from '../../../core/services/movie-search.service';
+import { TMDBService } from '../../../core/services/tmdb.service';
 
 @Component({
   selector: 'app-collection-details',
@@ -28,9 +27,8 @@ export class CollectionDetailsComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private collectionService = inject(CollectionService);
-  public searchService = inject(SearchService);
+  public TMDBService = inject(TMDBService);
   private location = inject(Location);
-  private snackBar = inject(MatSnackBar);
 
   collection: MovieCollection | undefined;
 

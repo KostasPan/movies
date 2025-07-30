@@ -9,7 +9,7 @@ import { GuestSession } from '../models/guest-session.interface';
 @Injectable({
   providedIn: 'root',
 })
-export class SearchService {
+export class TMDBService {
   private http = inject(HttpClient);
 
   private readonly API_KEY = environment.apiKey;

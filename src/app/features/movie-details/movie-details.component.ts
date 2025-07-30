@@ -8,7 +8,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { Observable, finalize } from 'rxjs';
 import { TMDbMovieResult } from '../../core/models/tmdb-movie-result.interface';
-import { SearchService } from '../../core/services/movie-search.service';
+import { TMDBService } from '../../core/services/tmdb.service';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MovieCollection } from '../../core/models/movie-collection.interface';
 import { CollectionService } from '../../core/services/collection.service';
@@ -43,7 +43,7 @@ export class MovieDetailsComponent implements OnInit {
   submittedRating: number | null = null;
 
   constructor(
-    private searchService: SearchService,
+    private TMDBService: TMDBService,
     private snackBar: MatSnackBar,
     private collectionService: CollectionService,
     private route: ActivatedRoute,
@@ -52,7 +52,7 @@ export class MovieDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.movieId = +this.route.snapshot.params['id'];
-    this.movie$ = this.searchService.getMovieDetails(this.movieId);
+    this.movie$ = this.TMDBService.getMovieDetails(this.movieId);
     this.movie$.subscribe((movie) => (this.movie = movie));
     this.collections = this.collectionService.getCollections();
   }
@@ -71,10 +71,13 @@ export class MovieDetailsComponent implements OnInit {
     }
     this.isSubmittingRating = true;
 
-    this.searchService.createGuestSession().subscribe({
+    this.TMDBService.createGuestSession().subscribe({
       next: (session) => {
-        this.searchService
-          .rateMovie(this.movieId, this.rating, session.guest_session_id)
+        this.TMDBService.rateMovie(
+          this.movieId,
+          this.rating,
+          session.guest_session_id
+        )
           .pipe(finalize(() => (this.isSubmittingRating = false)))
           .subscribe({
             next: () => {

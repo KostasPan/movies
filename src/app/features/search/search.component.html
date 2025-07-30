@@ -1,49 +1,87 @@
 <div id="search-page">
-  <button mat-raised-button color="accent" class="floating-action-button" *ngIf="selectedMovies.length > 0" (click)="openAddToCollectionDialog()">
+  <button
+    mat-raised-button
+    color="accent"
+    class="floating-action-button"
+    *ngIf="selectedMovies.length > 0"
+    (click)="openAddToCollectionDialog()"
+  >
     Add {{ selectedMovies.length }} movie(s) to Collection
   </button>
   <app-search-bar (search)="onSearchReceived($event)"></app-search-bar>
   <div class="results-container">
     <div class="search-results" *ngIf="movies.length > 0">
       <div class="pagination-controls" *ngIf="totalPages > 1">
-        <button mat-raised-button color="primary" (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="changePage(currentPage - 1)"
+          [disabled]="currentPage === 1"
+        >
           Previous
         </button>
         <span>Page {{ currentPage }} of {{ totalPages }}</span>
-        <button mat-raised-button color="primary" (click)="changePage(currentPage + 1)"
-          [disabled]="currentPage === totalPages">
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="changePage(currentPage + 1)"
+          [disabled]="currentPage === totalPages"
+        >
           Next
         </button>
       </div>
       <ul class="movie-list" [class.full-height]="totalPages <= 1">
-        <li *ngFor="let movie of movies" class="movie-item" [class.selected]="isSelected(movie)">
-            <div class="selection-checkbox">
-                <mat-checkbox
-                    [checked]="isSelected(movie)"
-                    (change)="toggleSelection(movie)"
-                    (click)="$event.stopPropagation()">
-                </mat-checkbox>
+        <li
+          *ngFor="let movie of movies"
+          class="movie-item"
+          [class.selected]="isSelected(movie)"
+        >
+          <div class="selection-checkbox">
+            <mat-checkbox
+              [checked]="isSelected(movie)"
+              (change)="toggleSelection(movie)"
+              (click)="$event.stopPropagation()"
+            >
+            </mat-checkbox>
+          </div>
+          <div class="movie-content" (click)="openMovieDetails(movie.id)">
+            <img
+              [src]="
+                movie.poster_path
+                  ? TMDBService.IMAGE_BASE_URL + movie.poster_path
+                  : 'assets/images/placeholder200x300.jpg'
+              "
+              [alt]="movie.title"
+              width="100"
+              height="150"
+            />
+            <div class="movie-info">
+              <h2>{{ movie.title }}</h2>
+              <div class="vote-average">
+                <span>{{ movie.vote_average.toFixed(1) }} / 10</span>
+              </div>
             </div>
-            <div class="movie-content" (click)="openMovieDetails(movie.id)">
-                <img [src]="
-                        movie.poster_path
-                        ? searchService.IMAGE_BASE_URL + movie.poster_path
-                        : 'assets/images/placeholder200x300.jpg'
-                    " [alt]="movie.title" width="100" height="150" />
-                <div class="movie-info">
-                    <h2>{{ movie.title }}</h2>
-                    <div class="vote-average">
-                    <span>{{ movie.vote_average.toFixed(1) }} / 10</span>
-                    </div>
-                </div>
-            </div>
+          </div>
         </li>
       </ul>
     </div>
-    <p *ngIf="searchAttempted && movies.length === 0 && currentSearchQuery && !isLoading" class="no-results">
-      No movies found for "<strong>{{ currentSearchQuery }}</strong>".
+    <p
+      *ngIf="
+        searchAttempted &&
+        movies.length === 0 &&
+        currentSearchQuery &&
+        !isLoading
+      "
+      class="no-results"
+    >
+      No movies found for "<strong>{{ currentSearchQuery }}</strong
+      >".
     </p>
-    <mat-spinner class="loading-spinner" *ngIf="isLoading" diameter="50"></mat-spinner>
+    <mat-spinner
+      class="loading-spinner"
+      *ngIf="isLoading"
+      diameter="50"
+    ></mat-spinner>
   </div>
   <router-outlet></router-outlet>
 </div>
